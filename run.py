@@ -65,6 +65,7 @@ def get_s3_inputs(bids_bucket, bids_relative_path, sub_search):
     if args.participant_label and args.analysis_level == "participant":
         subjects_to_analyze = args.participant_label
     else:
+        print("Searching for s3 subjects...")
         s3_prefix = bids_relative_path
         if sub_search: 
             if len(s3_prefix) > 0:
@@ -87,6 +88,7 @@ def get_local_inputs():
     if args.participant_label and args.analysis_level == "participant":
         subjects_to_analyze = args.participant_label
     else:
+        print("Searching for local subjects...")
         subject_dirs = glob(os.path.join(args.bids_dir, "sub-*"))
         subjects_to_analyze = [os.path.basename(subject_dir) for subject_dir in subject_dirs]
     if not 'sub-' in subjects_to_analyze[0]:
@@ -143,6 +145,7 @@ def analyze_local_outputs(subjects_to_analyze, pipeline, output_dir):
     session_statuses = pd.DataFrame(columns=columns)
     study_ses_count = 0
     for subject in subjects_to_analyze:
+        print(f"Auditing {subject} outputs")
         sessions_to_analyze = glob(os.path.join(args.bids_dir,subject,'ses-*')) # checking if sessions exist
         for session in sessions_to_analyze:
             study_ses_count = study_ses_count + 1
